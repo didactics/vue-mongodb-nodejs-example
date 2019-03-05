@@ -1,0 +1,10 @@
+{
+  "name": "Client2",
+  "email": "client2@example.com",
+  "phone": "5550005555",
+  "providers": [
+    {
+      "id": 3
+    }
+  ]
+}

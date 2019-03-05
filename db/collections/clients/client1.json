@@ -1,0 +1,16 @@
+{
+  "name": "Client1",
+  "email": "client1@example.com",
+  "phone": "5553330000",
+  "providers": [
+    {
+      "id": 1
+    },
+    {
+      "id": 3
+    },
+    {
+      "id": 5
+    }
+  ]
+}

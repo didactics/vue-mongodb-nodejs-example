@@ -1,0 +1,445 @@
+swagger: "2.0"
+
+info:
+  version: "0.0.1"
+  title: NodeJS+VueJS+MongoDB test
+  contact:
+    name: Sergei Vasilyev
+    email: vasilievsi@gmail.com
+
+host: localhost:8080
+basePath: /api
+
+tags:
+  - name: Clients
+    description: Clients control
+  - name: Providers
+    description: Providers control
+
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+
+  /clients:
+    get:
+      tags:
+        - Clients
+      summary: Get a list of all clients
+      operationId: getAllClients
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Client"
+        "500":
+          description: Server error occurred while retrieving clients
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    post:
+      tags:
+        - Clients
+      summary: Create a new client
+      operationId: createClient
+      parameters:
+        - name: body
+          in: body          
+          description: Client object to be created
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "400":
+          description: Client object incorrectly formatted
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "405":
+          description: Invalid input
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while storing the client
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /clients/{clientId}:
+    get:
+      tags:
+        - Clients
+      summary: Get a client identified by MongoDB _id
+      operationId: getClient
+      parameters:
+        - name: clientId
+          type: string
+          in: path
+          description: MongoDB _id of the sought client
+          required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Client"
+        "404":
+          description: Client with the given id not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while retrieving the client
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    put:
+      tags:
+        - Clients
+      summary: Update a client identified by MongoDB _id
+      operationId: updateClient
+      parameters:
+        - name: clientId
+          type: string
+          in: path
+          description: MongoDB _id of the client being updated
+          required: true
+        - name: body
+          in: body
+          description: Updated client object
+          required: true
+          schema:
+            $ref: "#/definitions/Client"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "400":
+          description: Client object incorrectly formatted
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Client with the given id not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while updating the client
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      tags:
+        - Clients
+      summary: Delete a client identified by MongoDB _id
+      operationId: deleteClient
+      parameters:
+        - name: clientId
+          type: string
+          in: path
+          description: MongoDB _id of the client to delete
+          required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "404":
+          description: Client with the given id not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while deleting the client
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /clients/refs/{providerId}:
+    delete:
+      tags:
+        - Clients
+      summary: Delete all references to a provider identified by its ID field
+      operationId: deleteProviderRefs
+      parameters:
+        - name: providerId
+          type: string
+          in: path
+          description: ID of the provider which references to delete
+          required: true
+      responses:
+        "200":
+          description: Refs to the privider were removed successfully
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "500":
+          description: Server error occurred while deleting references
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"            
+
+  /clients/{clientId}/providers:
+    get:
+      tags:
+        - Clients
+      summary: Get providers of the client identified by MongoDB _id
+      operationId: getClientProviders
+      parameters:
+        - name: clientId
+          type: string
+          in: path
+          description: MongoDB _id of the client which providers are sought
+          required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ProviderRef"
+        "404":
+          description: Client with the given id not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while retrieving the client's providers
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /providers:
+    get:
+      tags:
+        - Providers
+      summary: Get a list of all providers
+      operationId: getAllProviders
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Provider"
+        "500":
+          description: Server error occurred while retrieving providers
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      tags:
+        - Providers
+      summary: Create a new provider
+      operationId: createProvider
+      parameters:
+        - name: body
+          in: body          
+          description: Provider object to be created
+          required: true
+          schema:
+            $ref: '#/definitions/Provider'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "400":
+          description: Provider object incorrectly formatted
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "405":
+          description: Invalid input
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /providers/{providerId}:
+    get:
+      tags:
+        - Providers
+      summary: Get a provider identified by its ID field
+      operationId: getProvider
+      parameters:
+        - name: providerId
+          type: string
+          in: path
+          description: ID of the sought provider
+          required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Provider"
+        "404":
+          description: Provider with the given ID not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while retrieving the provider
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    put:
+      tags:
+        - Providers
+      summary: Update a provider identified by its ID field
+      operationId: updateProvider
+      parameters:
+        - name: providerId
+          type: string
+          in: path
+          description: ID of the provider being updated
+          required: true
+        - name: body
+          in: body
+          description: Updated provider object
+          required: true
+          schema:
+            $ref: "#/definitions/Provider"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "400":
+          description: Provider object incorrectly formatted
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "404":
+          description: Provider with the given id not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while updating the provider
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      tags:
+        - Providers
+      summary: Delete a provider identified by its ID field
+      operationId: deleteProvider
+      parameters:
+        - name: providerId
+          type: string
+          in: path
+          description: ID of the provider to delete
+          required: true
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        "404":
+          description: Provider with the given ID not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server error occurred while deleting the provider
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+definitions:
+
+  Client:
+    type: object
+    properties:
+      name:
+        type: string
+        required: true
+      email:
+        type: string
+        required: true
+        trim: true        
+        match: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+      phone:
+        type: string
+        required: false
+      providers:
+        type: array
+        items:
+          $ref: "#/definitions/ProviderRef"
+        description: Providers of this client
+        required: false
+
+  Provider:
+    type: object
+    properties:
+      id:
+        type: integer
+        minimum: 1
+        required: true
+        unique: true
+      name:
+        type: string
+        required: true
+
+  ProviderRef:
+    description: Weak reference to a Provider object (ID of the object).
+    type: object
+    properties:
+      id:
+        type: integer
+        minimum: 1
+        required: true
+        unique: true
+
+  GenericResponse: 
+    properties:
+      message:
+        type: string
+        required: true
+
+  ErrorResponse:    
+    properties:
+      message:
+        type: string
+        required: true
+  

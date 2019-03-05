@@ -1,0 +1,3 @@
+{"_id":{"$oid":"5c588f55ec784997109b872d"},"name":"Client1","email":"client1@kfrs.com","phone":"5555550000","providers":[{"id":1},{"id":3},{"id":5}]}
+{"_id":{"$oid":"5c588f86ec784997109b8755"},"name":"Client2","email":"client2@kfrs.com","phone":"5550005555","providers":[{"id":3}]}
+{"_id":{"$oid":"5c588f8aec784997109b875b"},"name":"Client3","email":"client3@kfrs.com","phone":"5553335555","providers":[{"id":2},{"id":4}]}
