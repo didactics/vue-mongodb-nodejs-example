@@ -77,7 +77,7 @@ The following instructions apply to Debian Linux distributions. Installation was
 - Edit/delete features of the New/Edit Client form are implemented as in-place editors as Bootstrap 4 prohibits stacked modal dialogs: "[Bootstrap only supports one modal window at a time. Nested modals aren’t supported as we believe them to be poor user experiences.](https://getbootstrap.com/docs/4.1/components/modal/)"
 
 ## Stopping the SPA
-	Ctrl+C in the Terminal window
+Press <kbd>Ctrl+C</kbd> in the Terminal window.
 
 ## Stopping the MongoDB service
 ``` bash
