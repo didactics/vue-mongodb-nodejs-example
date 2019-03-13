@@ -5,5 +5,5 @@
   "swaggerDoc": "./api/swagger/swagger.yaml",
   "apiPath": "/api",
   "apiDocPath": "/api-docs",
-  "db": "mongodb://localhost:27017/practical-test"
+  "db": "mongodb://localhost:27017/vue-mongodb-nodejs-example"
 }
